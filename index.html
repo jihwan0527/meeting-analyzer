@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meeting Analyzer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">🎙️</div>
+            <h1>회의록 자동 분석</h1>
+            <p class="subtitle">녹음 한 번이면 요약부터 슬랙 공유까지</p>
+        </header>
+
+        <!-- 설정 토글 -->
+        <button class="settings-toggle" id="settingsToggle">
+            ⚙️ 설정 <span class="badge" id="settingsBadge" hidden>!</span>
+        </button>
+
+        <section class="settings-panel" id="settingsPanel" hidden>
+            <div class="settings-card">
+                <div class="setting-group">
+                    <label class="setting-label" for="apiKeyInput">Gemini API Key</label>
+                    <div class="setting-input-row">
+                        <input type="password" id="apiKeyInput" placeholder="AIza..." autocomplete="off">
+                        <button class="icon-btn" id="toggleKeyVis" aria-label="키 보기">👁</button>
+                    </div>
+                </div>
+                <div class="setting-group">
+                    <label class="setting-label" for="slackUrlInput">Slack Webhook URL</label>
+                    <div class="setting-input-row">
+                        <input type="password" id="slackUrlInput" placeholder="https://hooks.slack.com/services/..." autocomplete="off">
+                        <button class="icon-btn" id="toggleSlackVis" aria-label="URL 보기">👁</button>
+                    </div>
+                </div>
+                <button id="saveSettingsBtn" class="btn btn-save">설정 저장</button>
+                <p class="setting-hint">💡 브라우저에만 저장됩니다. 서버로 전송되지 않아요.</p>
+            </div>
+        </section>
+
+        <!-- 녹음 -->
+        <section class="recorder-section">
+            <div class="recorder-card">
+                <div class="timer" id="timer">00:00</div>
+                <div class="waveform-wrap">
+                    <canvas id="visualizer" width="500" height="100"></canvas>
+                </div>
+                <div class="controls">
+                    <button id="recordBtn" class="btn btn-record" aria-label="녹음 시작">
+                        <span class="rec-dot"></span> 녹음 시작
+                    </button>
+                    <button id="stopBtn" class="btn btn-stop" disabled aria-label="녹음 중지">⏹ 중지</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- 상태 -->
+        <section class="status-section" id="statusSection" hidden>
+            <div class="status-card">
+                <div class="loader"></div>
+                <p id="statusText">음성 인식 중...</p>
+                <div class="progress-track"><div class="progress-bar" id="progressBar"></div></div>
+            </div>
+        </section>
+
+        <!-- 결과 -->
+        <section class="result-section" id="resultSection" hidden>
+            <div class="result-card">
+                <div class="tab-bar">
+                    <button class="tab active" data-tab="summary">📋 분석 결과</button>
+                    <button class="tab" data-tab="transcript">📝 녹취록</button>
+                </div>
+                <div class="tab-body" id="summaryTab"></div>
+                <div class="tab-body" id="transcriptTab" hidden></div>
+                <div class="action-bar">
+                    <button id="slackBtn" class="btn btn-slack">💬 Slack 전송</button>
+                    <button id="copyBtn" class="btn btn-outline">📋 복사</button>
+                    <button id="resetBtn" class="btn btn-ghost">🔄 새 녹음</button>
+                </div>
+            </div>
+        </section>
+
+        <div id="toast" class="toast" hidden></div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
